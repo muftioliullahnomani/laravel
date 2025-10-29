@@ -51,6 +51,22 @@ if [ -z "${APP_KEY:-}" ]; then
   fi
 fi
 
+# If .env still lacks a non-empty APP_KEY, generate and write one directly
+CURRENT_KEY="$(grep -E '^APP_KEY=' .env 2>/dev/null | cut -d= -f2- | tr -d '\r')"
+if [ -z "${CURRENT_KEY}" ]; then
+  GEN_KEY=$(php -r "echo 'base64:'.base64_encode(random_bytes(32));" 2>/dev/null || true)
+  if [ -n "${GEN_KEY}" ]; then
+    if grep -q '^APP_KEY=' .env 2>/dev/null; then
+      sed -i "s/^APP_KEY=.*/APP_KEY=${GEN_KEY}/" .env || true
+    else
+      printf "\nAPP_KEY=%s\n" "${GEN_KEY}" >> .env || true
+    fi
+    export APP_KEY="${GEN_KEY}"
+    # Clear config again to ensure fresh key is loaded
+    php artisan config:clear || true
+  fi
+fi
+
 # If using SQLite, ensure database file exists and env is set
 if [ "${DB_CONNECTION:-}" = "sqlite" ]; then
   mkdir -p database
