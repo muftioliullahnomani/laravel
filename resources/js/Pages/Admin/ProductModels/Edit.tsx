@@ -40,8 +40,10 @@ export default function Edit({ model, previewProducts, previewProduct }: { model
   }, [data.definition]);
 
   const updateElements = (updater: (prev: any[]) => any[]) => {
-    const next = updater(data.definition?.elements || []);
-    setData('definition', { ...(data.definition || {}), elements: next });
+    const prevEls = (data.definition?.elements as any[]) || [];
+    const next = updater(prevEls);
+    const def: any = { ...((data.definition as any) || {}), elements: next as any[] };
+    setData('definition', def as any);
   };
 
   const addElement = (type: string) => {
@@ -82,7 +84,8 @@ export default function Edit({ model, previewProducts, previewProduct }: { model
     [newEls[idx], newEls[swapIdx]] = [newEls[swapIdx], newEls[idx]];
     // reassign order
     const reassigned = newEls.map((e, i) => ({ ...e, order: i }));
-    setData('definition', { ...(data.definition || {}), elements: reassigned });
+    const def: any = { ...((data.definition as any) || {}), elements: reassigned as any[] };
+    setData('definition', def as any);
   };
 
   const toggleVisibility = (id: string) => {
