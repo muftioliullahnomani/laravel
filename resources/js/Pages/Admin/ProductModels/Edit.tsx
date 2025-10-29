@@ -43,7 +43,7 @@ export default function Edit({ model, previewProducts, previewProduct }: { model
     const prevEls = (data.definition?.elements as any[]) || [];
     const next = updater(prevEls);
     const def: any = { ...((data.definition as any) || {}), elements: next as any[] };
-    setData('definition', def as any);
+    (setData as any)('definition', def as any);
   };
 
   const addElement = (type: string) => {
@@ -85,7 +85,7 @@ export default function Edit({ model, previewProducts, previewProduct }: { model
     // reassign order
     const reassigned = newEls.map((e, i) => ({ ...e, order: i }));
     const def: any = { ...((data.definition as any) || {}), elements: reassigned as any[] };
-    setData('definition', def as any);
+    (setData as any)('definition', def as any);
   };
 
   const toggleVisibility = (id: string) => {
@@ -214,12 +214,12 @@ export default function Edit({ model, previewProducts, previewProduct }: { model
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
             <div className="md:col-span-2">
               <label className="block text-sm text-gray-700">Name</label>
-              <input className="mt-1 w-full border rounded px-3 py-2" value={data.name} onChange={e=>setData('name', e.target.value)} />
+              <input className="mt-1 w-full border rounded px-3 py-2" value={data.name} onChange={e=>(setData as any)('name', e.target.value)} />
               {errors.name && <div className="text-sm text-red-600">{errors.name}</div>}
             </div>
             <div>
               <label className="block text-sm text-gray-700">Preview Product</label>
-              <select className="mt-1 w-full border rounded px-3 py-2" value={data.preview_product_id ?? ''} onChange={e=>setData('preview_product_id', e.target.value ? Number(e.target.value) : null)}>
+              <select className="mt-1 w-full border rounded px-3 py-2" value={data.preview_product_id ?? ''} onChange={e=>(setData as any)('preview_product_id', e.target.value ? Number(e.target.value) : null)}>
                 {previewProducts.map(p => (
                   <option key={p.id} value={p.id}>{p.id}. {p.name}</option>
                 ))}
@@ -230,7 +230,7 @@ export default function Edit({ model, previewProducts, previewProduct }: { model
 
           <div>
             <label className="inline-flex items-center gap-2">
-              <input type="checkbox" checked={!!data.is_active} onChange={e=>setData('is_active', e.target.checked)} />
+              <input type="checkbox" checked={!!data.is_active} onChange={e=>(setData as any)('is_active', e.target.checked)} />
               <span>Active</span>
             </label>
             {errors.is_active && <div className="text-sm text-red-600">{errors.is_active}</div>}

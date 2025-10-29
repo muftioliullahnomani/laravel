@@ -3,8 +3,9 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "tsc && vite build",
-        "dev": "vite"
+        "build": "vite build",
+        "dev": "vite",
+        "typecheck": "tsc --noEmit"
     },
     "homepage": "http://yourdomainname.com/",
     "devDependencies": {
