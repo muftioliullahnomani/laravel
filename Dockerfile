@@ -24,6 +24,8 @@ RUN apt-get update && apt-get install -y \
     supervisor \
     git \
     unzip \
+    curl \
+    gettext-base \
     libicu-dev \
     libzip-dev \
     libpng-dev \
