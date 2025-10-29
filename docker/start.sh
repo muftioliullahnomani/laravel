@@ -16,6 +16,8 @@ fi
 
 # Ensure storage links and perms
 php artisan storage:link || true
+# Ensure required storage directories exist
+mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache || true
 chown -R www-data:www-data storage bootstrap/cache || true
 chmod -R 775 storage bootstrap/cache || true
 
@@ -28,9 +30,25 @@ if [ ! -f .env ]; then
   fi
 fi
 
+# Ensure .env owned and writable by web user
+chown www-data:www-data .env || true
+chmod 660 .env || true
+
+# Clear caches first to avoid stale config using empty APP_KEY
+php artisan config:clear || true
+php artisan route:clear || true
+php artisan view:clear || true
+
 # Generate APP_KEY if missing
 if [ -z "${APP_KEY:-}" ] || [ "${APP_KEY}" = "" ]; then
   php artisan key:generate --force || true
+fi
+
+# If APP_KEY still empty, try to export from .env (helps current process)
+if [ -z "${APP_KEY:-}" ]; then
+  if grep -q '^APP_KEY=' .env 2>/dev/null; then
+    export APP_KEY="$(grep -E '^APP_KEY=' .env | cut -d= -f2- | tr -d '\r')"
+  fi
 fi
 
 # If using SQLite, ensure database file exists and env is set
@@ -45,7 +63,7 @@ if [ "${DB_CONNECTION:-}" = "sqlite" ]; then
   chmod -R 775 database || true
 fi
 
-# Optimize config/routes/views for production
+# Optimize for production
 php artisan optimize || true
 
 # Run database migrations if DB is configured and reachable (optional, no-fail)
