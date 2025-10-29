@@ -1,0 +1,176 @@
+পেজ
+“Cart” পেজ তৈরি করে Template = Cart দিন (অথবা কন্টেন্টে [ecom_cart])।
+“Checkout” পেজ তৈরি করে Template = Checkout দিন (অথবা কন্টেন্টে [ecom_checkout])।
+হোম/ল্যান্ডিং পেজে [ecom_products limit="24"] ব্যবহার করুন। ক্যাটাগরি ফিল্টার: [ecom_products cat="category-slug"]।
+মেনু এলাইন
+Appearance → Menus → Menu Item edit → “Align (left/right)” ফিল্ডে left/right সেট করুন → Save।
+স্টাইল অপশন
+Admin → Ecom Settings → Home Style (JSON) ও Section Style (JSON) সেভ করুন (পরের ধাপে থিম UI-তে প্রয়োগ করব)।
+অর্ডার অ্যাডমিন
+Orders (CPT: order) লিস্টে Row/Bulk Actions দিয়ে স্ট্যাটাস আপডেট করুন।
+REST ইমপোর্ট গাইড
+এন্ডপয়েন্টগুলো কেবল admin ক্ষমতায় অ্যাক্সেসযোগ্য (লগইন কুকি/Nonce বা Application Password ব্যবহার করুন)।
+Categories
+POST /wp-json/ecom/v1/import/categories
+Body (JSON):
+json
+[
+  {"name": "T-Shirts", "slug": "tshirt"},
+  {"name": "Shoes", "slug": "shoes"}
+]
+Products
+POST /wp-json/ecom/v1/import/products
+Body (JSON):
+json
+[
+  {
+    "title": "Blue Tee",
+    "slug": "blue-tee",
+    "content": "<p>100% cotton</p>",
+    "price": 12.99,
+    "categories": ["tshirt"],
+    "image": "https://example.com/images/blue-tee.jpg"
+  }
+]
+কাজ: নতুন হলে insert, slug মিলে গেলে update; _price মেটা সেভ; product_cat টার্ম সেট; image দিলে ফিচারড ইমেজ সাইডলোড।
+Menus
+POST /wp-json/ecom/v1/import/menus
+Body (JSON):
+json
+[
+  {
+    "location": "primary",
+    "items": [
+      {"title": "Home", "url": "/", "align": "left"},
+      {"title": "Cart", "url": "/cart", "align": "right"}
+    ]
+  }
+]
+কাজ: লোকেশন মেনু না থাকলে তৈরি + এসাইন; আগের আইটেম ক্লিয়ার করে নতুন আইটেম তৈরি; _menu_item_align সেট।
+Styles
+POST /wp-json/ecom/v1/options/styles
+Body (JSON):
+json
+{
+  "home_style": {"card":"rounded-lg shadow-sm", "image_ratio":"1/1"},
+  "section_style": {"card":"rounded-md border", "image_ratio":"4/3"}
+}
+Recommended Actions
+ইমপোর্ট রান করুন (লগইন থাকা অবস্থায় Postman দিয়ে) এবং UI তে যাচাই করুন:
+ক্যাটাগরি → প্রোডাক্ট → মেনু → স্টাইলস (এই অর্ডারে)।
+Cart/Checkout পেজে ফ্লো চেক করুন।
+থিম UI কাস্টমাইজেশনের জন্য কনফার্ম করুন:
+হোম/সেকশন গ্রিডে home_style/section_style প্রয়োগ।
+কার্ড বাটন মোড (icon/text/both)।
+ফ্লোটিং “Go to cart”।
+Status
+থিম/প্লাগইনের প্রয়োজনীয় বেস ফিচার ও ইমপোর্ট API প্রস্তুত।
+আপনি ইমপোর্ট চালিয়ে ডেটা বসাতে পারবেন এবং সাইট রান করতে পারবেন।
+চাইলে এখনই থিম UI স্টাইলিং, ফ্লোটিং কার্ট, এবং অতিরিক্ত ইমপোর্ট (Orders) যুক্ত করে দেবো।
+Feedback submitted
+
+
+হা। করো।
+
+footer.php
++17
+Findings
+আপনার অনুরোধ অনুযায়ী বাকি প্রয়োজনীয় থিম/প্লাগইন কাজগুলো যোগ করেছি।
+এখন আপনি কাস্টম থিম/প্লাগইন দিয়েই প্রোডাক্ট, কার্ট, COD চেকআউট, মেনু অ্যালাইন, অর্ডার অ্যাকশন, এবং ডেটা ইমপোর্ট চালাতে পারবেন।
+কী কী সম্পন্ন হলো
+থিম (wp_export/laravelecomtheme/)
+header.php
+ → _menu_item_align দেখে মেনু আইটেম Left/Right দুই পাশে দেখায়।
+single-product.php
+ → প্রোডাক্ট ডিটেইল + Add to cart।
+archive-product.php
+ → প্রোডাক্ট গ্রিড (শর্টকোড ব্যবহার)।
+page-cart.php
+ (Template Name: Cart) → [ecom_cart]।
+page-checkout.php
+ (Template Name: Checkout) → [ecom_checkout]।
+footer.php
+ → কার্টে আইটেম থাকলে ফ্লোটিং “Go to cart” বাটন দেখায়।
+প্লাগইন (wp_export/laravelecomplug/)
+শর্টকোডস:
+includes/Shortcodes/Products.php
+ → [ecom_products limit="12" cat="slug"]
+includes/Cart.php
+ → [ecom_cart] এবং [ecom_add_to_cart id="123"]
+includes/Checkout.php
+ → [ecom_checkout]
+অর্ডার অ্যাডমিন:
+includes/Admin/Orders.php
+ → Row actions: Cancel, Mark Paid, Mark Shipped, Mark Completed
+Bulk actions: Cancel/Paid/Shipped/Completed
+REST ইমপোর্ট (
+includes/REST/Import.php
+):
+POST /wp-json/ecom/v1/import/categories → ক্যাটাগরি তৈরি/আপডেট
+POST /wp-json/ecom/v1/import/products → প্রোডাক্ট তৈরি/আপডেট, _price সেভ, product_cat সেট, ইমেজ সাইডলোড (optional)
+POST /wp-json/ecom/v1/import/menus → মেনু লোকেশন-ভিত্তিক আইটেম ইমপোর্ট, _menu_item_align সেট
+POST /wp-json/ecom/v1/options/styles → home_style/section_style সেভ
+Recommended Actions
+ডেপ্লয়
+wp_export/laravelecomtheme/ → wp-content/themes/laravelecomtheme/
+wp_export/laravelecomplug/ → wp-content/plugins/laravelecomplug/
+থিম/প্লাগইন Activate করুন।
+পেজ সেটআপ
+Pages:
+“Cart” → Template = Cart (অথবা [ecom_cart])
+“Checkout” → Template = Checkout (অথবা [ecom_checkout])
+হোম/ল্যান্ডিং পেজে [ecom_products limit="24"] (ক্যাটাগরিতে [ecom_products cat="slug"])
+মেনু অ্যালাইন
+Appearance → Menus → আইটেম এডিট → Align (left/right) → Save
+ইমপোর্ট চালান (লগইন সহ Postman/CURL)
+Categories:
+POST /wp-json/ecom/v1/import/categories
+Body:
+json
+[
+  {"name": "T-Shirts", "slug": "tshirt"},
+  {"name": "Shoes", "slug": "shoes"}
+]
+Products:
+POST /wp-json/ecom/v1/import/products
+Body:
+json
+[
+  {
+    "title": "Blue Tee",
+    "slug": "blue-tee",
+    "content": "<p>100% cotton</p>",
+    "price": 12.99,
+    "categories": ["tshirt"],
+    "image": "https://example.com/images/blue-tee.jpg"
+  }
+]
+Menus:
+POST /wp-json/ecom/v1/import/menus
+Body:
+json
+[
+  {
+    "location": "primary",
+    "items": [
+      {"title": "Home", "url": "/", "align": "left"},
+      {"title": "Cart", "url": "/cart", "align": "right"}
+    ]
+  }
+]
+Styles:
+POST /wp-json/ecom/v1/options/styles
+Body:
+json
+{
+  "home_style": {"card":"rounded-lg shadow-sm","image_ratio":"1/1"},
+  "section_style": {"card":"rounded-md border","image_ratio":"4/3"}
+}
+টেস্ট
+Products archive/single দেখুন।
+Add to cart → floating “Go to cart” দেখুন।
+Checkout (COD) সাবমিট করে অর্ডার তৈরি হয় কিনা দেখুন।
+Orders লিস্টে Row/Bulk actions কাজ করছে কিনা দেখুন।
+Next (Optional)
+থিম UI স্টাইলিং: Tailwind/ভালো CSS, home_style/section_style প্রয়োগ, কার্ড বাটন মোড (icon/text/both)।
+Orders Import: ecom/v1/import/orders এন্ডপয়েন্টে বাস্তব অর্ডার/আইটেম ইমপোর্ট লজিক যোগ করা।

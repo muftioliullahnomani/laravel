@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="D:\porgrams\laravel\ecommerce\database\eduaidis_laravel.xsl"?>
+<CACHE>
+<TITLE>eduaidis_laravel</TITLE>
+<STYLES>
+<STYLE Id="2" AlignText="Right" FontName="Segoe UI" FontCharset="1" Bold="False" Italic="False" Underline="False" StrikeOut="False" FontColor="rgb(0,0,0)" FontSize="9" BrushStyle="Solid" BrushBkColor="rgb(255,255,255)" BrushFgColor="rgb(0,0,0)">
+<BORDER_LEFT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_UP IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_RIGHT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_DOWN IsDefault="False" Color="rgb(160,160,160)" Width="1"/></STYLE>
+<STYLE Id="1" AlignText="Left" FontName="Segoe UI" FontCharset="1" Bold="False" Italic="False" Underline="False" StrikeOut="False" FontColor="rgb(0,0,0)" FontSize="9" BrushStyle="Solid" BrushBkColor="rgb(255,255,255)" BrushFgColor="rgb(0,0,0)">
+<BORDER_LEFT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_UP IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_RIGHT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_DOWN IsDefault="False" Color="rgb(160,160,160)" Width="1"/></STYLE>
+<STYLE Id="0" AlignText="Left" FontName="Segoe UI" FontCharset="1" Bold="False" Italic="False" Underline="False" StrikeOut="False" FontColor="rgb(0,0,0)" FontSize="9" BrushStyle="Solid" BrushBkColor="rgb(240,240,240)" BrushFgColor="rgb(0,0,0)">
+<BORDER_LEFT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_UP IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_RIGHT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_DOWN IsDefault="False" Color="rgb(160,160,160)" Width="1"/></STYLE>
+</STYLES>
+<LINES ColCount="8" RowCount="2">
+<LINE Height="21">
+<CELL StyleClass="0" Width="73" Align="Left">Database</CELL>
+<CELL StyleClass="0" Width="148" Align="Left">Status</CELL>
+<CELL StyleClass="0" Width="659" Align="Left">File Name</CELL>
+<CELL StyleClass="0" Width="66" Align="Left">File Size</CELL>
+<CELL StyleClass="0" Width="64" Align="Left">Tables</CELL>
+<CELL StyleClass="0" Width="64" Align="Left">Views</CELL>
+<CELL StyleClass="0" Width="64" Align="Left">Indexes</CELL>
+<CELL StyleClass="0" Width="68" Align="Left">Triggers</CELL>
+</LINE>
+<LINE Height="20">
+<CELL StyleClass="1" Width="73" Align="Left">main</CELL>
+<CELL StyleClass="1" Width="148" Align="Left">Connected (read-write)</CELL>
+<CELL StyleClass="1" Width="659" Align="Left">&#68;&#58;&#92;&#112;&#111;&#114;&#103;&#114;&#97;&#109;&#115;&#92;&#108;&#97;&#114;&#97;&#118;&#101;&#108;&#92;&#101;&#99;&#111;&#109;&#109;&#101;&#114;&#99;&#101;&#92;&#100;&#97;&#116;&#97;&#98;&#97;&#115;&#101;&#92;&#100;&#97;&#116;&#97;&#98;&#97;&#115;&#101;&#46;&#115;&#113;&#108;&#105;&#116;&#101;</CELL>
+<CELL StyleClass="2" Width="66" Align="Right">282624</CELL>
+<CELL StyleClass="2" Width="64" Align="Right">23</CELL>
+<CELL StyleClass="2" Width="64" Align="Right">0</CELL>
+<CELL StyleClass="2" Width="64" Align="Right">20</CELL>
+<CELL StyleClass="2" Width="68" Align="Right">0</CELL>
+</LINE>
+</LINES>
+</CACHE>

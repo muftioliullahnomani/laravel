@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="D:\porgrams\laravel\ecommerce\database\users.xsl"?>
+<CACHE>
+<TITLE>users</TITLE>
+<STYLES>
+<STYLE Id="0" AlignText="Left" FontName="Segoe UI" FontCharset="1" Bold="False" Italic="False" Underline="False" StrikeOut="False" FontColor="rgb(0,0,0)" FontSize="9" BrushStyle="Solid" BrushBkColor="rgb(240,240,240)" BrushFgColor="rgb(0,0,0)">
+<BORDER_LEFT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_UP IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_RIGHT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_DOWN IsDefault="False" Color="rgb(160,160,160)" Width="1"/></STYLE>
+<STYLE Id="1" AlignText="Right" FontName="Segoe UI" FontCharset="1" Bold="False" Italic="False" Underline="False" StrikeOut="False" FontColor="rgb(0,0,0)" FontSize="9" BrushStyle="Solid" BrushBkColor="rgb(255,255,255)" BrushFgColor="rgb(0,0,0)">
+<BORDER_LEFT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_UP IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_RIGHT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_DOWN IsDefault="False" Color="rgb(160,160,160)" Width="1"/></STYLE>
+<STYLE Id="2" AlignText="Left" FontName="Segoe UI" FontCharset="1" Bold="False" Italic="False" Underline="False" StrikeOut="False" FontColor="rgb(0,0,0)" FontSize="9" BrushStyle="Solid" BrushBkColor="rgb(255,255,255)" BrushFgColor="rgb(0,0,0)">
+<BORDER_LEFT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_UP IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_RIGHT IsDefault="False" Color="rgb(160,160,160)" Width="1"/><BORDER_DOWN IsDefault="False" Color="rgb(160,160,160)" Width="1"/></STYLE>
+</STYLES>
+<LINES ColCount="10" RowCount="3">
+<LINE Height="21">
+<CELL StyleClass="0" Width="64" Align="Left">rowid</CELL>
+<CELL StyleClass="0" Width="64" Align="Left">id</CELL>
+<CELL StyleClass="0" Width="87" Align="Left">name</CELL>
+<CELL StyleClass="0" Width="141" Align="Left">email</CELL>
+<CELL StyleClass="0" Width="128" Align="Left">email_verified_at</CELL>
+<CELL StyleClass="0" Width="431" Align="Left">password</CELL>
+<CELL StyleClass="0" Width="416" Align="Left">remember_token</CELL>
+<CELL StyleClass="0" Width="128" Align="Left">created_at</CELL>
+<CELL StyleClass="0" Width="128" Align="Left">updated_at</CELL>
+<CELL StyleClass="0" Width="72" Align="Left">is_admin</CELL>
+</LINE>
+<LINE Height="21">
+<CELL StyleClass="1" Width="64" Align="Right">1</CELL>
+<CELL StyleClass="1" Width="64" Align="Right">1</CELL>
+<CELL StyleClass="2" Width="87" Align="Left">Admin User</CELL>
+<CELL StyleClass="2" Width="141" Align="Left">&#97;&#100;&#109;&#105;&#110;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</CELL>
+<CELL StyleClass="2" Width="128" Align="Left">2025-10-19 00:47:31</CELL>
+<CELL StyleClass="2" Width="431" Align="Left">&#36;&#50;&#121;&#36;&#49;&#50;&#36;&#48;&#81;&#72;&#111;&#85;&#116;&#120;&#88;&#83;&#122;&#72;&#79;&#118;&#66;&#107;&#120;&#103;&#81;&#103;&#107;&#68;&#117;&#86;&#111;&#97;&#67;&#101;&#78;&#90;&#103;&#68;&#81;&#99;&#119;&#84;&#116;&#113;&#49;&#83;&#72;&#109;&#109;&#88;&#87;&#108;&#46;&#104;&#117;&#69;&#108;&#83;&#106;&#54;</CELL>
+<CELL StyleClass="2" Width="416" Align="Left">jm39sUO8kSkiWyXtfmyAC3GcoK4oLDsp9XRLeNE2oigUUb3kPjbsIsyCLWky</CELL>
+<CELL StyleClass="2" Width="128" Align="Left">2025-10-18 16:41:29</CELL>
+<CELL StyleClass="2" Width="128" Align="Left">2025-10-19 00:47:31</CELL>
+<CELL StyleClass="1" Width="72" Align="Right">1</CELL>
+</LINE>
+<LINE Height="21">
+<CELL StyleClass="1" Width="64" Align="Right">2</CELL>
+<CELL StyleClass="1" Width="64" Align="Right">2</CELL>
+<CELL StyleClass="2" Width="87" Align="Left">MD</CELL>
+<CELL StyleClass="2" Width="141" Align="Left">&#109;&#100;&#64;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</CELL>
+<CELL StyleClass="2" Width="128" Align="Left">(null)</CELL>
+<CELL StyleClass="2" Width="431" Align="Left">&#36;&#50;&#121;&#36;&#49;&#50;&#36;&#106;&#102;&#81;&#84;&#119;&#49;&#49;&#99;&#111;&#116;&#70;&#48;&#98;&#49;&#114;&#103;&#57;&#65;&#50;&#121;&#51;&#79;&#105;&#50;&#88;&#48;&#52;&#46;&#107;&#88;&#112;&#81;&#107;&#113;&#75;&#81;&#82;&#98;&#115;&#101;&#77;&#47;&#106;&#98;&#56;&#100;&#102;&#52;&#84;&#57;&#56;&#66;&#121;</CELL>
+<CELL StyleClass="2" Width="416" Align="Left">(null)</CELL>
+<CELL StyleClass="2" Width="128" Align="Left">2025-10-19 07:56:02</CELL>
+<CELL StyleClass="2" Width="128" Align="Left">2025-10-19 07:56:02</CELL>
+<CELL StyleClass="1" Width="72" Align="Right">0</CELL>
+</LINE>
+</LINES>
+</CACHE>

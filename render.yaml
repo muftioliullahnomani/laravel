@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: laravel-ecommerce
+    env: docker
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: APP_DEBUG
+        value: false
+      - key: PORT
+        value: 10000
+      - key: DB_CONNECTION
+        value: sqlite
