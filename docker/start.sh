@@ -6,7 +6,12 @@ export PORT="${PORT:-10000}"
 
 # Render injects PORT; template nginx conf
 if [ -f /etc/nginx/templates/default.conf.template ]; then
-  envsubst '\n$PORT' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf
+  if command -v envsubst >/dev/null 2>&1; then
+    envsubst '$PORT' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf
+  else
+    # Fallback: basic substitution without envsubst
+    sed "s/\$PORT/${PORT}/g" /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf
+  fi
 fi
 
 # Ensure storage links and perms
@@ -14,8 +19,17 @@ php artisan storage:link || true
 chown -R www-data:www-data storage bootstrap/cache || true
 chmod -R 775 storage bootstrap/cache || true
 
+# Ensure .env exists (Render doesn't provide a file by default)
+if [ ! -f .env ]; then
+  if [ -f .env.example ]; then
+    cp .env.example .env || true
+  else
+    touch .env || true
+  fi
+fi
+
 # Generate APP_KEY if missing
-if [ -z "${APP_KEY:-}" ] || [ "$APP_KEY" = "" ]; then
+if [ -z "${APP_KEY:-}" ] || [ "${APP_KEY}" = "" ]; then
   php artisan key:generate --force || true
 fi
 
@@ -40,17 +54,15 @@ php artisan migrate --force || true
 # If ADMIN_EMAIL is provided, promote that user to admin automatically
 if [ -n "${ADMIN_EMAIL:-}" ]; then
   php -r "require 'vendor/autoload.php'; \
-    /** bootstrap Laravel **/ \
     (function(){ \
-      $app = require 'bootstrap/app.php'; \
-      $kernel = $app->make(Illuminate\\Contracts\\Console\\Kernel::class); \
-      $kernel->bootstrap(); \
-      $email = getenv('ADMIN_EMAIL'); \
-      if ($email) { \
-        $affected = App\\Models\\User::where('email',$email)->update(['is_admin'=>true]); \
-        if (!$affected) { \
-          // If user doesn't exist yet, try to create a minimal verified user
-          App\\Models\\User::firstOrCreate(['email'=>$email], ['name'=>'Admin','password'=>bcrypt(str()->random(16)),'email_verified_at'=>now(),'is_admin'=>true]); \
+      \$app = require 'bootstrap/app.php'; \
+      \$kernel = \$app->make(Illuminate\\Contracts\\Console\\Kernel::class); \
+      \$kernel->bootstrap(); \
+      \$email = getenv('ADMIN_EMAIL'); \
+      if (\$email) { \
+        \$affected = App\\Models\\User::where('email',\$email)->update(['is_admin'=>true]); \
+        if (!\$affected) { \
+          App\\Models\\User::firstOrCreate(['email'=>\$email], ['name'=>'Admin','password'=>bcrypt(str()->random(16)),'email_verified_at'=>now(),'is_admin'=>true]); \
         } \
       } \
     })();" || true
