@@ -26,12 +26,14 @@ RUN apt-get update && apt-get install -y \
     unzip \
     curl \
     gettext-base \
+    sqlite3 \
+    libsqlite3-dev \
     libicu-dev \
     libzip-dev \
     libpng-dev \
     libonig-dev \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install -j$(nproc) pdo_mysql intl zip gd \
+    && docker-php-ext-install -j$(nproc) pdo_mysql pdo_sqlite intl zip gd \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure PHP
