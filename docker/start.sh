@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -uo pipefail
 
 # Default PORT if not provided by Render
 export PORT="${PORT:-10000}"
