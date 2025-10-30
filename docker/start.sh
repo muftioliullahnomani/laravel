@@ -6,6 +6,7 @@ export PORT="${PORT:-10000}"
 
 # Render injects PORT; template nginx conf
 if [ -f /etc/nginx/templates/default.conf.template ]; then
+  echo "[start.sh] Templating nginx config for PORT=${PORT}"
   if command -v envsubst >/dev/null 2>&1; then
     envsubst '$PORT' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf
   else
@@ -15,8 +16,10 @@ if [ -f /etc/nginx/templates/default.conf.template ]; then
 fi
 
 # Ensure storage links and perms
+echo "[start.sh] Linking storage"
 php artisan storage:link || true
 # Ensure required storage directories exist
+echo "[start.sh] Ensure storage/framework and bootstrap/cache exist"
 mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache || true
 chown -R www-data:www-data storage bootstrap/cache || true
 chmod -R 775 storage bootstrap/cache || true
@@ -31,16 +34,19 @@ if [ ! -f .env ]; then
 fi
 
 # Ensure .env owned and writable by web user
+echo "[start.sh] Ensure .env ownership and perms"
 chown www-data:www-data .env || true
 chmod 660 .env || true
 
 # Clear caches first to avoid stale config using empty APP_KEY
+echo "[start.sh] Clearing caches"
 php artisan config:clear || true
 php artisan route:clear || true
 php artisan view:clear || true
 
 # Generate APP_KEY if missing
 if [ -z "${APP_KEY:-}" ] || [ "${APP_KEY}" = "" ]; then
+  echo "[start.sh] Generating APP_KEY"
   php artisan key:generate --force || true
 fi
 
@@ -69,6 +75,7 @@ fi
 
 # If using SQLite, ensure database file exists and env is set
 if [ "${DB_CONNECTION:-}" = "sqlite" ]; then
+  echo "[start.sh] Preparing SQLite database file"
   mkdir -p database
   if [ ! -f database/database.sqlite ]; then
     touch database/database.sqlite
@@ -80,13 +87,16 @@ if [ "${DB_CONNECTION:-}" = "sqlite" ]; then
 fi
 
 # Optimize for production
+echo "[start.sh] Optimize"
 php artisan optimize || true
 
 # Run database migrations if DB is configured and reachable (optional, no-fail)
+echo "[start.sh] Migrate (non-fatal)"
 php artisan migrate --force || true
 
 # If ADMIN_EMAIL is provided, promote that user to admin automatically
 if [ -n "${ADMIN_EMAIL:-}" ]; then
+  echo "[start.sh] Auto-promote ADMIN_EMAIL=${ADMIN_EMAIL}"
   php -r "require 'vendor/autoload.php'; \
     (function(){ \
       \$app = require 'bootstrap/app.php'; \
@@ -102,5 +112,9 @@ if [ -n "${ADMIN_EMAIL:-}" ]; then
     })();" || true
 fi
 
-# Start Supervisor (which starts php-fpm and nginx)
+# Non-fatal config tests for visibility
+nginx -t || true
+php -v || true
+
+echo "[start.sh] Starting supervisord (php-fpm + nginx)"
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
