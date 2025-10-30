@@ -103,10 +103,12 @@ if [ -n "${ADMIN_EMAIL:-}" ]; then
       \$kernel = \$app->make(Illuminate\\Contracts\\Console\\Kernel::class); \
       \$kernel->bootstrap(); \
       \$email = getenv('ADMIN_EMAIL'); \
+      \$plain = getenv('ADMIN_PASSWORD') ?: null; \
+      \$hashed = \$plain ? bcrypt(\$plain) : bcrypt(str()->random(16)); \
       if (\$email) { \
-        \$affected = App\\Models\\User::where('email',\$email)->update(['is_admin'=>true]); \
+        \$affected = App\\Models\\User::where('email',\$email)->update(\$plain ? ['is_admin'=>true,'password'=>\$hashed] : ['is_admin'=>true]); \
         if (!\$affected) { \
-          App\\Models\\User::firstOrCreate(['email'=>\$email], ['name'=>'Admin','password'=>bcrypt(str()->random(16)),'email_verified_at'=>now(),'is_admin'=>true]); \
+          App\\Models\\User::firstOrCreate(['email'=>\$email], ['name'=>'Admin','password'=>\$hashed,'email_verified_at'=>now(),'is_admin'=>true]); \
         } \
       } \
     })();" || true
