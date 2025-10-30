@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Admin/Test user
         User::query()->firstOrCreate(
             ['email' => 'admin@example.com'],
             [
@@ -30,16 +29,39 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Categories
         $categoryNames = ['Electronics', 'Fashion', 'Home', 'Sports', 'Toys'];
-        $categories = collect($categoryNames)->map(fn ($n) => Category::factory()->create(['name' => $n]));
+        $categories = [];
+        foreach ($categoryNames as $n) {
+            $slug = Str::slug($n);
+            $categories[$n] = Category::query()->firstOrCreate(
+                ['slug' => $slug],
+                [
+                    'name' => $n,
+                    'description' => $n . ' category',
+                    'parent_id' => null,
+                ]
+            );
+        }
 
-        // Products
-        foreach (range(1, 30) as $i) {
-            $category = $categories->random();
-            Product::factory()->create([
-                'category_id' => $category->id,
-            ]);
+        foreach ($categories as $name => $cat) {
+            for ($i = 1; $i <= 5; $i++) {
+                $pname = $name . ' Item ' . $i;
+                $slug = Str::slug($pname) . '-' . strtolower(Str::random(4));
+                Product::query()->firstOrCreate(
+                    ['slug' => $slug],
+                    [
+                        'category_id' => $cat->id,
+                        'product_model_id' => null,
+                        'name' => $pname,
+                        'sku' => strtoupper(substr($name, 0, 3)) . '-' . str_pad((string) $i, 3, '0', STR_PAD_LEFT),
+                        'description' => $pname . ' description',
+                        'price' => rand(10, 200) * 100,
+                        'stock' => rand(5, 50),
+                        'image_url' => null,
+                        'is_active' => true,
+                    ]
+                );
+            }
         }
     }
 }

@@ -73,17 +73,20 @@ if [ -z "${CURRENT_KEY}" ]; then
   fi
 fi
 
-# If using SQLite, ensure database file exists and env is set
+# If using SQLite, ensure database file exists and env is set (supports persistent disk via SQLITE_PATH)
 if [ "${DB_CONNECTION:-}" = "sqlite" ]; then
-  echo "[start.sh] Preparing SQLite database file"
-  mkdir -p database
-  if [ ! -f database/database.sqlite ]; then
-    touch database/database.sqlite
+  SQLITE_PATH_DEFAULT="/var/www/html/database/database.sqlite"
+  SQLITE_PATH_EFFECTIVE="${SQLITE_PATH:-$SQLITE_PATH_DEFAULT}"
+  echo "[start.sh] Preparing SQLite database file at ${SQLITE_PATH_EFFECTIVE}"
+  SQLITE_DIR="$(dirname "${SQLITE_PATH_EFFECTIVE}")"
+  mkdir -p "${SQLITE_DIR}"
+  if [ ! -f "${SQLITE_PATH_EFFECTIVE}" ]; then
+    touch "${SQLITE_PATH_EFFECTIVE}"
   fi
   # Ensure Laravel sees the sqlite path
-  export DB_DATABASE="/var/www/html/database/database.sqlite"
-  chown -R www-data:www-data database || true
-  chmod -R 775 database || true
+  export DB_DATABASE="${SQLITE_PATH_EFFECTIVE}"
+  chown -R www-data:www-data "${SQLITE_DIR}" || true
+  chmod -R 775 "${SQLITE_DIR}" || true
 fi
 
 # Optimize for production
@@ -93,6 +96,12 @@ php artisan optimize || true
 # Run database migrations if DB is configured and reachable (optional, no-fail)
 echo "[start.sh] Migrate (non-fatal)"
 php artisan migrate --force || true
+
+# Optionally seed database if requested
+if [ "${DB_SEED:-false}" = "true" ]; then
+  echo "[start.sh] Seeding database (non-fatal)"
+  php artisan db:seed --force || true
+fi
 
 # If ADMIN_EMAIL is provided, promote that user to admin automatically
 if [ -n "${ADMIN_EMAIL:-}" ]; then
